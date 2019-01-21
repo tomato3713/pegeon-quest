@@ -75,13 +75,13 @@ class PegeonClass extends Figure implements ActionListener {
         if( !state.isEvolved ) {
             // 進化するかを判定
             if (this.state.java >= state.javaLimit) {
-                setImg("pegeon_digital.png"); state.isEvolved = this.changeEffect = true;
+                setImg("javako.jpg"); state.isEvolved = this.changeEffect = true;
             }
             if (this.state.food >= state.foodLimit) {
-                setImg("pegeon_very-big.jpg"); state.isEvolved = this.changeEffect = true;
+                setImg("big.jpg"); state.isEvolved = this.changeEffect = true;
             }
             if (this.state.report >= state.reportLimit) {
-                setImg("pegeon_mukimuki.jpg");  state.isEvolved = this.changeEffect = true;
+                setImg("mukimuki.jpg");  state.isEvolved = this.changeEffect = true;
             }
             if( state.isEvolved ){
                 evolutionTimer = new Timer(800, this);
@@ -95,14 +95,14 @@ class PegeonClass extends Figure implements ActionListener {
         this.setX(x);
         this.setY(y);
         this.setImg("pegeon_small.png");
-        this.crowsSound = new soundThread("koke.wav"); // 鳩の鳴き声を探す必要あり
+        this.crowsSound = new soundThread("poppoo.wav"); // 鳩の鳴き声を探す必要あり
         this.beamSound = new soundThread("fm_shot4.wav");
 
         this.name = null;
         this.t = 0;
 
         // 鳩ビーム用画像の読み込み
-        String path = new File("./img", "pegeon_very-big_beam.jpg").getPath();
+        String path = new File("./img", "big-beam.jpg").getPath();
         try {
             this.beam_img = Toolkit.getDefaultToolkit().getImage(path);
         } catch (Exception e) {

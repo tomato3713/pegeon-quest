@@ -5,9 +5,9 @@ class PegeonFeedClass extends Figure {
         String feedName = "";
         this.setX(x); this.setY(y);
         this.kind = kind;
-        if( kind == 1) feedName = "feed_java.jpg";
-        if( kind == 2) feedName = "feed_report.jpg";
-        if( kind == 3) feedName = "feed_food.jpg";
+        if( kind == 1) feedName = "javaesa.jpg";
+        if( kind == 2) feedName = "reportesa.jpg";
+        if( kind == 3) feedName = "esa.jpg";
 
         this.setImg(feedName);
     }
