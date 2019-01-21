@@ -38,8 +38,8 @@ class TitleClass extends JFrame implements KeyListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_ENTER:
                 this.setVisible(false);
-                pegeonWindow = new PegeonWindowClass(500, 100, 700, 600);
-                commandListWindow = new CommandListWindowClass(50, 100, 400, 300);
+                pegeonWindow = new PegeonWindowClass(500, 100, 700, 575);
+                commandListWindow = new CommandListWindowClass(50, 100, 400, 350);
                 pegeonControllWindow = new PegeonControllWindowClass(50, 460, 400, 250, pegeonWindow);
                 break;
         }
