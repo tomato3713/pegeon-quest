@@ -43,11 +43,14 @@ class PegeonWindowClass extends JFrame implements ActionListener {
         // 可視化
         this.setVisible(true);
     }
+
     public void actionPerformed(ActionEvent e) {
         this.bar.setValue(this.bar.getValue()+1);
 
         // time over
-        if( this.bar.getPercentComplete() >= 100 ) { timeover = true; }
+        if( this.bar.getPercentComplete() >= 100 ) {
+            timeover = true;
+        }
     }
     public PegeonPanel getPanel() {
         return panel;

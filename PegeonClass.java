@@ -37,6 +37,10 @@ class PegeonClass extends Figure implements ActionListener {
 
     private State state;
 
+    public void reset() {
+        this.state = new State();
+    }
+
     //　各餌の摂取状態を管理するためのクラス
     public class State{
         // 餌をやった量を表示するかを決める。表示するときは true
@@ -78,18 +82,18 @@ class PegeonClass extends Figure implements ActionListener {
             foodFname = "reportesa.jpg";
         } else if( feednum == 3 ){
             this.state.food++;
-            foodFname = "esa.jpg";
+            foodFname = "esa.png";
         }
         if( !state.isEvolved ) {
             // 進化するかを判定
             if (this.state.java >= state.javaLimit) {
-                setImg("javako.jpg"); state.isEvolved = this.changeEffect = true;
+                setImg("javako.png"); state.isEvolved = this.changeEffect = true;
             }
             if (this.state.food >= state.foodLimit) {
-                setImg("yasokukku.jpg"); state.isEvolved = this.changeEffect = true;
+                setImg("yasokukku.png"); state.isEvolved = this.changeEffect = true;
             }
             if (this.state.report >= state.reportLimit) {
-                setImg("nagaashigoso.jpg");  state.isEvolved = this.changeEffect = true;
+                setImg("nagaashigoso.png");  state.isEvolved = this.changeEffect = true;
             }
             if( state.isEvolved ){
                 evolutionTimer = new Timer(800, this);
@@ -126,7 +130,7 @@ class PegeonClass extends Figure implements ActionListener {
         this.t = 0;
 
         // 鳩ビーム用画像の読み込み
-        String path = new File("./img", "big-beam.jpg").getPath();
+        String path = new File("./img", "yasokukku-beam.png").getPath();
         try {
             this.beam_img = Toolkit.getDefaultToolkit().getImage(path);
         } catch (Exception e) {

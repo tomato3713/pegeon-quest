@@ -1,14 +1,9 @@
-import java.util.HashMap;
-import java.util.Random;
 import javax.swing.*;
 import java.awt.*;
 import java.*;
 import java.awt.Toolkit;
-import java.awt.Image;
-import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
