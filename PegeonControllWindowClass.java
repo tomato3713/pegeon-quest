@@ -31,20 +31,8 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
         history_count = 0;
         panel = pegeonWin.getPanel();
         pegeon = panel.getPegeon();
-
-        try{
-            //   audioIn = null;
-            // this.file = new File("/sound","koke.wav");
-            // audioIn = AudioSystem.getAudioInputStream(this.file);
-            // clip = AudioSystem.getClip();
-            // clip.open(audioIn);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        //        se = java.applet.Applet.newAudioClip(getClass().getResource("cancel2.wav"));
         //スクロールバーを追加
         JScrollPane scroll = new JScrollPane(log);
-        //TODO setAutoscrollsしてるのに自動スクロールしない・・・
         scroll.setAutoscrolls(true);
         this.getContentPane().add(scroll);
         //コマンド打つ場所の追加
@@ -67,20 +55,9 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
             //コマンドのチェック
             commandCheck(commandlist);
             history.add(command_area.getText());
-            //TODO 再入力するときこれではだめ
-            history_count++;
+            history_count = history.size(); //遡ったヒストリー位置を一番最後に戻す
             command_area.setText("");
         }
-        //         this.getContentPane().getComponent(0);
-        //   this.getContentPane().getComponent(0).setMaximumSize();
-        //        SwingUtilities.invokeLater(new Runnable() {
-        //            @Override
-        //            public void run() {
-        //                JScrollBar scrollBar =
-        //                scrollBar.setValue(scrollBar.getMaximum());
-        //            }
-        //
-        //        });
 
 
     }

@@ -86,10 +86,10 @@ class PegeonClass extends Figure implements ActionListener {
                 setImg("javako.jpg"); state.isEvolved = this.changeEffect = true;
             }
             if (this.state.food >= state.foodLimit) {
-                setImg("big.jpg"); state.isEvolved = this.changeEffect = true;
+                setImg("yasokukku.jpg"); state.isEvolved = this.changeEffect = true;
             }
             if (this.state.report >= state.reportLimit) {
-                setImg("mukimuki.jpg");  state.isEvolved = this.changeEffect = true;
+                setImg("nagaashigoso.jpg");  state.isEvolved = this.changeEffect = true;
             }
             if( state.isEvolved ){
                 evolutionTimer = new Timer(800, this);
@@ -229,6 +229,8 @@ class PegeonClass extends Figure implements ActionListener {
             // System.out.println("evolutionTimer off");
             this.changeEffect = false;
             this.evolutionTimer.stop();
+        } else if ( e.getSource().equals(foodTimer)) {
+            this.foodVisible = false;
         }
     }
 }
