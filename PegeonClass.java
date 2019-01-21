@@ -13,10 +13,12 @@ class PegeonClass extends Figure implements ActionListener {
     // *Effect が true のときに、エフェクトの文字を表示する
     private boolean changeEffect = false;
     private boolean beamEffect = false;
+    private boolean foodVisible = false;
 
     // 進化、ビームのエフェクトの持続を管理する
     private Timer evolutionTimer;
     private Timer beamTimer;
+    private Timer foodTimer;
 
     // 鳩の名前
     private String name;
@@ -31,6 +33,7 @@ class PegeonClass extends Figure implements ActionListener {
     private soundThread beamSound;
     // 鳩ビーム用画像
     private Image beam_img;
+    private Image food_img;
 
     private State state;
 
@@ -63,14 +66,19 @@ class PegeonClass extends Figure implements ActionListener {
     // 餌番号を受け取って、受け取った番号に対応する変数に＋１する
     // *Limitを超えたら、進化させる。
     // すでに進化しているのなら、進化させない。
-    public void setstate(int feednum) {
+    public void food(int feednum) {
+        String foodFname = "";
         // まず、食べた餌の量をインクリメントする
+        // 餌の画像を更新する
         if( feednum == 1 ) {
             this.state.java++;
+            foodFname = "javaesa.jpg";
         } else if( feednum == 2){
             this.state.report++;
+            foodFname = "reportesa.jpg";
         } else if( feednum == 3 ){
             this.state.food++;
+            foodFname = "esa.jpg";
         }
         if( !state.isEvolved ) {
             // 進化するかを判定
@@ -88,6 +96,22 @@ class PegeonClass extends Figure implements ActionListener {
                 evolutionTimer.start();
             }
         }
+
+        // 画像ファイルを読み込む
+        String path = new File("./img",foodFname).getPath();
+        try {
+            this.food_img = Toolkit.getDefaultToolkit().getImage(path);
+        } catch (Exception e) {
+            // 画像ファイルが存在しない。
+            // 読み込み不可能なファイル形式である可能性がある。
+            e.printStackTrace();
+        }
+
+        // 餌の画像が表示されるようにする
+        this.foodVisible = true;
+        this.foodTimer = new Timer(500, this);
+        this.foodTimer.start();
+
     }
 
     PegeonClass(int x, int y) {
@@ -118,9 +142,9 @@ class PegeonClass extends Figure implements ActionListener {
     @Override
     public void draw(Graphics g) {
         if( this.beamEffect == true ) {
+            // 鳩ビーム時は他のエフェクトは描画しない
             drawPegeonbeam(g);
         } else {
-            // System.out.println("State\n java: " + this.getState().java+ ", food: " + this.getState().food + ", report: " + this.getState().report );
             // 鳩を動かす
             int futureX = Math.abs((int)(400 * Math.cos(this.t) + 100));
             int futureY = Math.abs((int)(400 * Math.sin(this.t) + 50));
@@ -136,21 +160,32 @@ class PegeonClass extends Figure implements ActionListener {
                 int height = img.getHeight(null);
                 this.setX(futureX); this.setY(futureY);
                 g.drawImage(img, this.getX(), this.getY(), -1 * width, height, null);
+
+                if( this.foodVisible ) {
+                    g.drawImage(food_img, this.getX() + 50, this.getY() - 20, null);
+                }
+
             } else {
                 this.setX(futureX); this.setY(futureY);
                 super.draw(g);
+
+                if( this.foodVisible ) {
+                    g.drawImage(food_img, this.getX() - 100, this.getY(), null);
+                }
             }
+
             if( getName() != null ) {
                 // もし鳩に名前がつけられていれば実行
                 g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 32)); // set Font
                 g.drawString(this.name, this.x + 50, this.y + 20); // draw pegeon name
             }
-        }
-        if( this.changeEffect == true ) {
-            evolution(g);
-        }
 
-        state.draw(g, getX() + 50, getY() + 40);
+            // 進化のエフェクトを追加
+            if( this.changeEffect ) { evolution(g); }
+
+            // 状態を表示
+            state.draw(g, getX() + 50, getY() + 40);
+        }
     }
     // crow は鳩の鳴き声を鳴らします。
     public void crow() {

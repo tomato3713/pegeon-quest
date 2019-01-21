@@ -95,13 +95,13 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
                 log.addText(command_area.getText());
                 pegeon.crow();
             } else if (commandlist[0].equals("feedJava")) {
-                panel.feed(1);
+                pegeon.food(1);
                 log.addText(command_area.getText());
             } else if (commandlist[0].equals("feedReport")) {
-                panel.feed(2);
+                pegeon.food(2);
                 log.addText(command_area.getText());
             } else if (commandlist[0].equals("feedFood")) {
-                panel.feed(3);
+                pegeon.food(3);
                 log.addText(command_area.getText());
             } else if ((commandlist[0].equals("exit"))){
                 System.exit(0);
