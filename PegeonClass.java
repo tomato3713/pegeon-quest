@@ -109,7 +109,7 @@ class PegeonClass extends Figure implements ActionListener {
 
         // 餌の画像が表示されるようにする
         this.foodVisible = true;
-        this.foodTimer = new Timer(500, this);
+        this.foodTimer = new Timer(1000, this);
         this.foodTimer.start();
 
     }
