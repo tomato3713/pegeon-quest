@@ -90,8 +90,13 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
             } else if ((commandlist[0].equals("exit"))){
                 System.exit(0);
             } else if ((commandlist[0].equals("beam"))){
-                pegeon.beam();
-                observer.setValue(0);
+                // true が返ってきたなら、ok
+                // false が返って来たときは、yasokukku以外の状態のとき
+                if( pegeon.beam() ) {
+                    observer.setValue(0);
+                } else {
+                    // TODO: Error
+                }
             } else if ((commandlist[0].equals("restart"))){
                 //初期化して消す？
                 // メインゲーム画面のリセット
@@ -99,6 +104,8 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
                 // ログのリセット
                 this.reset();
                 observer.setValue(0);
+            } else if( commandlist[0].equals("start")) {
+                observer.start();
             } else {
                 log.addText("Error!");
             }

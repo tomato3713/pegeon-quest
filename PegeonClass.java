@@ -45,12 +45,15 @@ class PegeonClass extends Figure implements ActionListener {
     public class State{
         // 餌をやった量を表示するかを決める。表示するときは true
         private boolean visible = true;
+        // 現在の種類 -- normal
+        //                   |-----> javako ( Java )
+        //                   |-----> nagaashigoso ( Report )
+        //                   |-----> yasokukku ( Food )
+        private String kind = "normal";
         // 各餌の上げた回数
         private int java, food, report;
         // 各餌の進化するために必要な餌の数
         private final int javaLimit = 5, reportLimit = 4, foodLimit = 3;
-        // 進化している場合は true
-        private boolean isEvolved = false;
         State() {
             this.java = 0;
             this.food = 0;
@@ -59,10 +62,10 @@ class PegeonClass extends Figure implements ActionListener {
         // draw function draw the state
         private void draw(Graphics g, int x, int y) {
             if ( visible ) {
-                g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 24));
+                g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 32));
                 g.drawString("Java:" + this.java, x, y);
-                g.drawString("Food:" + this.food, x, y + 30);
-                g.drawString("Report:" + this.report, x, y + 30 * 2);
+                g.drawString("Food:" + this.food, x, y + 35);
+                g.drawString("Report:" + this.report, x, y + 35 * 2);
             }
         }
     }
@@ -84,18 +87,22 @@ class PegeonClass extends Figure implements ActionListener {
             this.state.food++;
             foodFname = "esa.png";
         }
-        if( !state.isEvolved ) {
+        // 未進化のとき
+        if( state.kind == "normal" ) {
             // 進化するかを判定
             if (this.state.java >= state.javaLimit) {
-                setImg("javako.png"); state.isEvolved = this.changeEffect = true;
+                setImg("javako.png"); this.changeEffect = true;
+                state.kind = "javako";
             }
             if (this.state.food >= state.foodLimit) {
-                setImg("yasokukku.png"); state.isEvolved = this.changeEffect = true;
+                setImg("yasokukku.png"); this.changeEffect = true;
+                state.kind = "yasokukku";
             }
             if (this.state.report >= state.reportLimit) {
-                setImg("nagaashigoso.png");  state.isEvolved = this.changeEffect = true;
+                setImg("nagaashigoso.png");  this.changeEffect = true;
+                state.kind = "nagaashigoso";
             }
-            if( state.isEvolved ){
+            if( state.kind == "normal" ){
                 evolutionTimer = new Timer(800, this);
                 evolutionTimer.start();
             }
@@ -115,7 +122,6 @@ class PegeonClass extends Figure implements ActionListener {
         this.foodVisible = true;
         this.foodTimer = new Timer(1000, this);
         this.foodTimer.start();
-
     }
 
     PegeonClass(int x, int y) {
@@ -153,9 +159,14 @@ class PegeonClass extends Figure implements ActionListener {
             int futureX = Math.abs((int)(400 * Math.cos(this.t) + 100));
             int futureY = Math.abs((int)(400 * Math.sin(this.t) + 50));
 
-            // System.out.println( "x:" + this.getX() +  " y:" + this.getY());
-            if( t > Math.PI * 2) { t = 0; }
-            else { t += 0.005; }
+            // 餌が表示されるときは動きを止める。
+            if( !foodVisible ) {
+                if( t > Math.PI * 2) { t = 0; }
+                else { t += 0.005; }
+            } else {
+                if( t > Math.PI * 2) { t = 0; }
+                else { t += 0.002; }
+            }
 
             // 鳩が進む方向に鳩の頭を向ける
             if ( this.getX() < futureX ) {
@@ -215,13 +226,18 @@ class PegeonClass extends Figure implements ActionListener {
     }
 
     // 鳩ビーム開始用メソッド
-    public void beam() {
-        this.beamEffect = true;
-        this.beamTimer = new Timer(1000, this);
-        this.beamTimer.start();
+    // もしyasokukku以外なら、falseを返す
+    public boolean beam() {
+        if ( this.state.kind == "yasokukku" ) {
+            this.beamEffect = true;
+            this.beamTimer = new Timer(1000, this);
+            this.beamTimer.start();
 
-        Thread sound = new Thread(this.beamSound);
-        sound.start();
+            Thread sound = new Thread(this.beamSound);
+            sound.start();
+            return true;
+        }
+        return false;
     }
 
     public void actionPerformed(ActionEvent e) {

@@ -20,6 +20,8 @@ class BarObservable extends Observable implements ActionListener {
     }
     public void setBar(JProgressBar bar) {
         this.bar = bar;
+    }
+    public void start() {
         timer = new Timer(50, this);
         timer.start();
     }

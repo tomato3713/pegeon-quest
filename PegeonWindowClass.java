@@ -24,8 +24,8 @@ class PegeonWindowClass extends JFrame implements Observer {
     private PegeonPanel panel;
     private JProgressBar bar;
     private BarObservable observer;
+
     public PegeonWindowClass(int basex, int basey, int x, int y, BarObservable o) {
-        this.observer = o;
         // ウィンドウの初期位置とサイズを指定
         this.setBounds(basex, basey, x, y);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,11 +39,13 @@ class PegeonWindowClass extends JFrame implements Observer {
         Thread bgm = new Thread(new bgmThread());
         bgm.start();
 
+        this.observer = o;
+        this.observer.setBar(bar);
+
         // 可視化
         this.setVisible(true);
     }
 
-    public JProgressBar getBar() { return bar; }
     public PegeonPanel getPanel() { return panel; }
 
     // BGM 再生用を行うクラス
