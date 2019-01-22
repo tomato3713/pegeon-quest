@@ -1,8 +1,6 @@
 // TODO 画像の大きさを揃える
 // TODO 背景の透明化
 // TODO マウスを近づけるとハトが逃げていく
-import javax.swing.Timer;
-import java.awt.event.*;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 import java.awt.BorderLayout;
@@ -17,13 +15,17 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
 
+import java.util.Observer;
+import java.util.Observable;
+
 // メインのゲームウィンドウ
-class PegeonWindowClass extends JFrame implements ActionListener {
+class PegeonWindowClass extends JFrame implements Observer {
+    private boolean timeOver = false;
     private PegeonPanel panel;
     private JProgressBar bar;
-    private Timer barTimer;
-    private boolean timeover = false;
-    public PegeonWindowClass(int basex, int basey, int x, int y) {
+    private BarObservable observer;
+    public PegeonWindowClass(int basex, int basey, int x, int y, BarObservable o) {
+        this.observer = o;
         // ウィンドウの初期位置とサイズを指定
         this.setBounds(basex, basey, x, y);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,24 +39,12 @@ class PegeonWindowClass extends JFrame implements ActionListener {
         Thread bgm = new Thread(new bgmThread());
         bgm.start();
 
-        barTimer = new Timer(20, this);
-        barTimer.start();
-
         // 可視化
         this.setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent e) {
-        this.bar.setValue(this.bar.getValue()+1);
-
-        // time over
-        if( this.bar.getPercentComplete() >= 100 ) {
-            timeover = true;
-        }
-    }
-    public PegeonPanel getPanel() {
-        return panel;
-    }
+    public JProgressBar getBar() { return bar; }
+    public PegeonPanel getPanel() { return panel; }
 
     // BGM 再生用を行うクラス
     class bgmThread implements Runnable {
@@ -84,5 +74,8 @@ class PegeonWindowClass extends JFrame implements ActionListener {
                 e.printStackTrace();
             }
         }
+    }
+    public void update(Observable o, Object r) {
+        timeOver = true;
     }
 }

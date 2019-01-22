@@ -11,6 +11,7 @@ class TitleClass extends JFrame implements KeyListener {
     public PegeonWindowClass pegeonWindow;
     public CommandListWindowClass commandListWindow;
     public PegeonControllWindowClass pegeonControllWindow;
+    public BarObservable barObservable;
 
     public TitleClass(){
         JPanel p = new JPanel();
@@ -33,9 +34,16 @@ class TitleClass extends JFrame implements KeyListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_ENTER:
                 this.setVisible(false);
-                pegeonWindow = new PegeonWindowClass(500, 100, 700, 575);
+                barObservable = new BarObservable();
+                pegeonWindow = new PegeonWindowClass(500, 100, 700, 575, barObservable);
                 commandListWindow = new CommandListWindowClass(50, 100, 400, 350);
-                pegeonControllWindow = new PegeonControllWindowClass(50, 460, 400, 250, pegeonWindow);
+                pegeonControllWindow = new PegeonControllWindowClass(50, 460, 400, 250, pegeonWindow, barObservable);
+
+                // 進捗バーの値が変化したときにpegeonWindowと
+                // pegeonControllWindowに通知を送る.
+                barObservable.setBar(pegeonWindow.getBar());
+                barObservable.addObserver(pegeonWindow);
+                barObservable.addObserver(pegeonControllWindow);
                 break;
         }
         repaint();

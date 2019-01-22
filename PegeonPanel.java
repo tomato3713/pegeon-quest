@@ -2,9 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.ArrayDeque;
 
 // メインのゲームウィンドウ
 class PegeonPanel extends JPanel implements ActionListener {
