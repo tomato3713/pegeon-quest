@@ -35,10 +35,4 @@ class PegeonPanel extends JPanel implements ActionListener {
     public PegeonClass.State getPegeonState(){
         return pegeon.getState();
     }
-
-    public void reset() {
-        // 初期化する
-        // 鳩の状態を初期化
-        this.pegeon.reset();
-    }
 }

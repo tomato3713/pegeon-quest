@@ -18,7 +18,6 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
     private ArrayList<String> history; //コマンドの履歴を保存
     private int history_count; //コマンドの履歴の数
     private AudioInputStream audioIn;
-    private PegeonPanel panel; // pegeonPanel
     private PegeonClass pegeon; // 鳩本体
     private BarObservable observer;
 
@@ -32,8 +31,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
         command_area = new JTextField();
         history = new ArrayList<String>();
         history_count = 0;
-        panel = pegeonWin.getPanel();
-        pegeon = panel.getPegeon();
+        pegeon = pegeonWin.getPanel().getPegeon();
         //スクロールバーを追加
         JScrollPane scroll = new JScrollPane(log);
         scroll.setAutoscrolls(true);
@@ -66,10 +64,6 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
     }
     //コマンドのチェック
     void commandCheck(String[] commandlist){
-        // System.out.println("a");
-        // soundThread sound = new soundThread("koke.wav");
-        // Thread th  = new Thread(sound);
-        // th.start();
         if (commandlist.length == 1) {
             if (commandlist[0].equals("crows")) {
                 log.addText(command_area.getText());
@@ -100,7 +94,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
             } else if ((commandlist[0].equals("restart"))){
                 //初期化して消す？
                 // メインゲーム画面のリセット
-                panel.reset();
+                pegeon.reset();
                 // ログのリセット
                 this.reset();
                 observer.setValue(0);
