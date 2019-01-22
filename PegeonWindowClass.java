@@ -1,4 +1,3 @@
-// TODO 背景の透明化
 // TODO マウスを近づけるとハトが逃げていく
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
