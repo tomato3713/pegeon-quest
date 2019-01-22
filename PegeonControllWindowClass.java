@@ -152,6 +152,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
 
     // 進捗バーが100%以上になったので、ゲームオーバー
     public void update(Observable o, Object r) {
+        // TODO: ゲームオーバー時の処理を追加
         System.out.println("time over");
     }
 }
