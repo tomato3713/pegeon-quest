@@ -7,9 +7,15 @@ import java.awt.Graphics;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.File;
+import java.util.Observable;
 
 // 鳩を定義するクラス
-class PegeonClass extends Figure implements ActionListener {
+class PegeonClass extends Observable implements ActionListener {
+    // 位置に関するもの
+    private int x,y;
+    // 画像データを格納する変数
+    private Image img;
+
     // *Effect が true のときに、エフェクトの文字を表示する
     private boolean changeEffect = false;
     private boolean beamEffect = false;
@@ -145,11 +151,32 @@ class PegeonClass extends Figure implements ActionListener {
             e.printStackTrace();
         }
     }
+    // getter
+    // 現在の座標を取得
+    public int getX() { return this.x; }
+    public int getY() { return this.y; }
+
     // setter
+    // 画像の読み込みは渡されたファイル名をimgディレクトリ以下から探す
+    public void setImg(String fname) {
+        String path = new File("./img", fname).getPath();
+        try {
+            this.img = Toolkit.getDefaultToolkit().getImage(path);
+        } catch (Exception e) {
+            // 画像ファイルが存在しない。
+            // 読み込み不可能なファイル形式である可能性がある。
+            e.printStackTrace();
+        }
+    }
     public String getName() { return this.name; }
     public void setName(String name) { this.name = name; }
+    public void setX(int x) { this.x = x; }
+    public void setY(int y) { this.y = y; }
+    // x, yだけ画像を動かす
+    public void move(int x, int y) {
+        this.x += x; this.y += y;
+    }
 
-    @Override
     public void draw(Graphics g) {
         if( this.beamEffect == true ) {
             // 鳩ビーム時は他のエフェクトは描画しない
@@ -182,7 +209,7 @@ class PegeonClass extends Figure implements ActionListener {
 
             } else {
                 this.setX(futureX); this.setY(futureY);
-                super.draw(g);
+                g.drawImage(this.img, getX(), getY(), null);
 
                 if( this.foodVisible ) {
                     g.drawImage(food_img, this.getX() - 100, this.getY(), null);
