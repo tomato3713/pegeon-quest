@@ -1,21 +1,18 @@
 import javax.swing.*;
 import java.awt.*;
 import java.*;
-import java.awt.event.*;
+import java.util.Observer;
+import java.util.Observable;
 
 // メインのゲームウィンドウ
-class PegeonPanel extends JPanel implements ActionListener {
+class PegeonPanel extends JPanel implements Observer {
     private SceneClass scene;
     private PegeonClass pegeon;
-    private Timer timer;
     public PegeonPanel() {
         // 載せる部品を登録
         scene =  new SceneClass();
         pegeon = new PegeonClass(100, 200);
-
-        // 定期的に再描画を行う
-        timer = new Timer(5, this);
-        timer.start();
+        pegeon.addObserver(this);
 
         // 可視化
         this.setVisible(true);
@@ -25,7 +22,7 @@ class PegeonPanel extends JPanel implements ActionListener {
         scene.draw(g);
         pegeon.draw(g);
     }
-    public void actionPerformed(ActionEvent e) {
+    public void update(Observable o, Object obj) {
         this.repaint();
     }
     // getter

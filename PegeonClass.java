@@ -13,6 +13,9 @@ import java.util.Observable;
 class PegeonClass extends Observable implements ActionListener {
     // 位置に関するもの
     private int x,y;
+    // 鳩の位置を決定する変数
+    private double t;
+
     // 画像データを格納する変数
     private Image img;
 
@@ -26,13 +29,13 @@ class PegeonClass extends Observable implements ActionListener {
     private Timer beamTimer;
     private Timer foodTimer;
 
+    // 鳩を定期的に動かすためのタイマー
+    private Timer moveTimer;
+
     // 鳩の名前
     private String name;
     // 名前を表示するための Label
     private JLabel nameLabel;
-
-    // 鳩の位置を決定する変数
-    private double t;
 
     // 音声ファイル
     private soundThread crowsSound;
@@ -150,6 +153,9 @@ class PegeonClass extends Observable implements ActionListener {
             // 読み込み不可能なファイル形式である可能性がある。
             e.printStackTrace();
         }
+
+        moveTimer = new Timer(5, this);
+        moveTimer.start();
     }
     // getter
     // 現在の座標を取得
@@ -172,10 +178,6 @@ class PegeonClass extends Observable implements ActionListener {
     public void setName(String name) { this.name = name; }
     public void setX(int x) { this.x = x; }
     public void setY(int y) { this.y = y; }
-    // x, yだけ画像を動かす
-    public void move(int x, int y) {
-        this.x += x; this.y += y;
-    }
 
     public void draw(Graphics g) {
         if( this.beamEffect == true ) {
@@ -279,5 +281,7 @@ class PegeonClass extends Observable implements ActionListener {
         } else if ( e.getSource().equals(foodTimer)) {
             this.foodVisible = false;
         }
+        setChanged();
+        notifyObservers();
     }
 }
