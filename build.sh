@@ -1,12 +1,11 @@
 #! /bin/sh
 
 javac *.java
-jar cfm PegeonQuest.jar manifest.txt *.class
 
-if [ $?  -eq 0  ]; then
-    echo "Success to make jar file! : PegeonQuest.jar"
+if [ $? -eq 0 ]; then
+    jar cfm PegeonQuest.jar manifest.txt *.class
 
-    echo "Will you execute this jar file? [Y/n]"
+    echo "Success: Will you execute PegeonQuest.jar file? [Y/n]"
     read ANSWER
 
     case $ANSWER in
@@ -15,10 +14,6 @@ if [ $?  -eq 0  ]; then
             java -jar PegeonQuest.jar
             ;;
         * )
-            echo "NO!!"
             ;;
     esac
-
-else
-    echo "Failure to Made jar file!\njar cfm PegeonQuest.jar manifest.txt *.class *.java"
 fi
