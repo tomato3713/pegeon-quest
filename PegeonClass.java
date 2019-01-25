@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Image;
 import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.File;
@@ -71,10 +72,12 @@ class PegeonClass extends Observable implements ActionListener {
         // draw function draw the state
         private void draw(Graphics g, int x, int y) {
             if ( visible ) {
-                g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 32));
+                g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 32));
+                g.setColor(Color.black);
                 g.drawString("Java:" + this.java, x, y);
                 g.drawString("Food:" + this.food, x, y + 35);
                 g.drawString("Report:" + this.report, x, y + 35 * 2);
+                // g.drawRect(x, y, 130, 100);
             }
         }
     }
@@ -111,7 +114,7 @@ class PegeonClass extends Observable implements ActionListener {
                 setImg("nagaashigoso.png");  this.changeEffect = true;
                 state.kind = "nagaashigoso";
             }
-            if( state.kind == "normal" ){
+            if( state.kind != "normal" ){
                 evolutionTimer = new Timer(800, this);
                 evolutionTimer.start();
             }
@@ -154,7 +157,7 @@ class PegeonClass extends Observable implements ActionListener {
             e.printStackTrace();
         }
 
-        moveTimer = new Timer(5, this);
+        moveTimer = new Timer(15, this);
         moveTimer.start();
     }
     // getter
