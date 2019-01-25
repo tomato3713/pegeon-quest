@@ -22,7 +22,10 @@ class BarObservable extends Observable implements ActionListener {
         this.bar = bar;
     }
     public void start() {
-        timer = new Timer(50, this);
-        timer.start();
+        this.timer = new Timer(50, this);
+        this.timer.start();
+    }
+    public void stop() {
+        this.timer.stop();
     }
 }
