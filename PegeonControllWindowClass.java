@@ -15,13 +15,14 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
     private TextFieldPanel log; //ログ
     private JTextField command_area; //コマンドうつ場所
     private PegeonWindowClass pegeonWin; // メインのゲーム画面
+    private CommandListWindowClass cmdlistWin; // コマンドリスト
     private ArrayList<String> history; //コマンドの履歴を保存
     private int history_count; //コマンドの履歴の数
     private AudioInputStream audioIn;
     private PegeonClass pegeon; // 鳩本体
     private BarObservable observer;
 
-    PegeonControllWindowClass(int basex, int basey, int x, int y, PegeonWindowClass pegeonWin, BarObservable o) {
+    PegeonControllWindowClass(int basex, int basey, int x, int y, PegeonWindowClass pegeonWin, CommandListWindowClass cmdlistWin, BarObservable o) {
         observer = o;
         // 初期位置とサイズを指定
         this.setBounds(basex, basey, x, y);
@@ -33,6 +34,8 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
         history = new ArrayList<String>();
         history_count = 0;
         pegeon = pegeonWin.getPanel().getPegeon();
+        this.pegeonWin = pegeonWin;
+        this.cmdlistWin = cmdlistWin;
         //スクロールバーを追加
         JScrollPane scroll = new JScrollPane(log);
         scroll.setAutoscrolls(true);
@@ -83,7 +86,14 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
                 observer.setValue(0);
                 log.addText(command_area.getText());
             } else if ((commandlist[0].equals("exit"))){
-                System.exit(0);
+                // BadendcloseClassを呼ぶ
+                new BadendcloseClass();
+                this.setVisible(false);
+                this.pegeonWin.setVisible(false);
+                this.cmdlistWin.setVisible(false);
+                this.reset();
+
+                // System.exit(0);
             } else if ((commandlist[0].equals("beam"))){
                 // true が返ってきたなら、ok
                 // false が返って来たときは、yasokukku以外の状態のとき
@@ -94,11 +104,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
                 }
             } else if ((commandlist[0].equals("restart"))){
                 //初期化して消す？
-                // メインゲーム画面のリセット
-                pegeon.reset();
-                // ログのリセット
                 this.reset();
-                observer.setValue(0);
             } else if( commandlist[0].equals("start")) {
                 observer.start();
             } else {
@@ -118,6 +124,11 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
     }
 
     private void reset(){
+        // メインゲーム画面のリセット
+        pegeon.reset();
+        // bar のリセット
+        observer.stop();
+        observer.setValue(0);
     }
 
     @Override
@@ -148,7 +159,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
     // 進捗バーが100%以上になったので、ゲームオーバー
     public void update(Observable o, Object r) {
         // TODO: ゲームオーバー時の処理を追加
-        System.out.println("time over");
+        new GAMEOVERClass();
     }
 }
 

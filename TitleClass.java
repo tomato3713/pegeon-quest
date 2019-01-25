@@ -37,7 +37,7 @@ class TitleClass extends JFrame implements KeyListener {
                 barObservable = new BarObservable();
                 pegeonWindow = new PegeonWindowClass(500, 100, 700, 575, barObservable);
                 commandListWindow = new CommandListWindowClass(50, 100, 400, 350);
-                pegeonControllWindow = new PegeonControllWindowClass(50, 460, 400, 250, pegeonWindow, barObservable);
+                pegeonControllWindow = new PegeonControllWindowClass(50, 460, 400, 250, pegeonWindow, commandListWindow, barObservable);
 
                 // 進捗バーの値が変化したときにpegeonWindowと
                 // pegeonControllWindowに通知を送る.

@@ -49,6 +49,7 @@ class PegeonClass extends Observable implements ActionListener {
 
     public void reset() {
         this.state = new State();
+        this.setImg("pegeon_small.png");
     }
 
     //　各餌の摂取状態を管理するためのクラス
