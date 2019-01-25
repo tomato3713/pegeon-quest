@@ -26,6 +26,7 @@ class PegeonWindowClass extends JFrame implements Observer {
     public PegeonWindowClass(int basex, int basey, int x, int y, BarObservable o) {
         // ウィンドウの初期位置とサイズを指定
         this.setBounds(basex, basey, x, y);
+        this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Container pane = getContentPane();

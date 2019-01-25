@@ -27,6 +27,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
         this.setBounds(basex, basey, x, y);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //初期化
+        this.setResizable(false);
         log = new TextFieldPanel();
         command_area = new JTextField();
         history = new ArrayList<String>();

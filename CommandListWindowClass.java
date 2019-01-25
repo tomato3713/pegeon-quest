@@ -7,6 +7,7 @@ class CommandListWindowClass extends JFrame implements ActionListener {
     CommandListWindowClass(int basex, int basey, int x, int y) {
         // ウィンドウの表示位置とサイズを指定
         this.setBounds(basex, basey, x, y);
+        this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // ウィンドウに載せる部品を登録
