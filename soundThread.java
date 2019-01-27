@@ -1,13 +1,14 @@
 import java.io.File;
 // For sound
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
 import javax.sound.sampled.Clip;
 
 class soundThread implements Runnable {
     File file;
-    soundThread(String fname) {
+    public soundThread(String fname) {
         this.file = new File("./sound", fname);
     }
     @Override

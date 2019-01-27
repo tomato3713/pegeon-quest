@@ -46,7 +46,7 @@ class PegeonWindowClass extends JFrame implements Observer {
     public PegeonPanel getPanel() { return panel; }
 
     // BGM 再生用を行うクラス
-    class bgmThread extends Thread implements Runnable {
+    class bgmThread extends Thread {
         File file;
         private boolean isActive = true;
         private boolean isPlay = false;
