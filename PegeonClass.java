@@ -33,8 +33,6 @@ class PegeonClass extends Observable implements ActionListener {
     // 鳩を定期的に動かすためのタイマー
     private Timer moveTimer;
 
-    // 鳩の名前
-    private String name;
     // 名前を表示するための Label
     private JLabel nameLabel;
 
@@ -69,10 +67,13 @@ class PegeonClass extends Observable implements ActionListener {
         private int java, food, report;
         // 各餌の進化するために必要な餌の数
         private final int javaLimit = 5, reportLimit = 4, foodLimit = 3;
+        // 鳩の名前
+        private String name;
         State() {
             this.java = 0;
             this.food = 0;
             this.report = 0;
+            this.name = null;
         }
         // draw function draw the state
         private void draw(Graphics g, int x, int y) {
@@ -154,7 +155,6 @@ class PegeonClass extends Observable implements ActionListener {
         this.foodSound = new soundThread("delicious.wav");
         this.namedSound = new soundThread("thanks.wav");
 
-        this.name = null;
         this.t = 0;
 
         // 鳩ビーム用画像の読み込み
@@ -187,11 +187,11 @@ class PegeonClass extends Observable implements ActionListener {
             e.printStackTrace();
         }
     }
-    public String getName() { return this.name; }
+    public String getName() { return this.state.name; }
     public void setName(String name) {
         Thread sound = new Thread(this.namedSound);
         sound.start();
-        this.name = name;
+        this.state.name = name;
     }
     public void setX(int x) { this.x = x; }
     public void setY(int y) { this.y = y; }
@@ -239,7 +239,7 @@ class PegeonClass extends Observable implements ActionListener {
                 // もし鳩に名前がつけられていれば実行
                 g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 32));
                 g.setColor(Color.black);
-                g.drawString(this.name, this.x + 50, this.y + 10); // draw pegeon name
+                g.drawString(this.state.name, this.x + 50, this.y + 10); // draw pegeon name
             }
 
             // 進化のエフェクトを追加
