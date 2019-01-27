@@ -56,10 +56,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
         if (commandlist.length == 1) {
             if (commandlist[0].equals("help")) {
                 new HelpWin(pegeonWin, this, cmdlistWin);
-                // 画面遷移
-                this.setVisible(false);
-                this.pegeonWin.setVisible(false);
-                this.cmdlistWin.setVisible(false);
+                this.setAllVisible(false);
                 this.reset();
             } else if (commandlist[0].equals("crows")) {
                 log.addText(command_area.getText());
@@ -78,6 +75,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
                 observer.setValue(0);
                 log.addText(command_area.getText());
             } else if ( commandlist[0].equals("君に決めた")) {
+                // 鳩の状態によって、複数のエンド画面に繊維する
                 if( pegeon.getState().kind.equals("normal") ) {
                     // 進化していない
                     new BadendnotevolutionClass();
@@ -92,12 +90,10 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
                     }
                 }
             } else if ((commandlist[0].equals("exit"))){
+                // exitした場合は、鳩の世話を途中で投げ出したということでバッドエンド画面に遷移する
                 new BadendcloseClass();
-
                 // 画面遷移
-                this.setVisible(false);
-                this.pegeonWin.setVisible(false);
-                this.cmdlistWin.setVisible(false);
+                this.setAllVisible(false);
                 this.reset();
 
                 // System.exit(0);
@@ -151,9 +147,12 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
     public void update(Observable o, Object r) {
         new GAMEOVERClass();
         this.reset();
-        this.setVisible(false);
-        this.pegeonWin.setVisible(false);
-        this.cmdlistWin.setVisible(false);
+        this.setAllVisible(false);
+    }
+    private void setAllVisible(boolean b) {
+        this.setVisible(b);
+        this.pegeonWin.setVisible(b);
+        this.cmdlistWin.setVisible(b);
     }
 }
 
