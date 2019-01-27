@@ -41,6 +41,10 @@ class PegeonClass extends Observable implements ActionListener {
     // 音声ファイル
     private soundThread crowsSound;
     private soundThread beamSound;
+    private soundThread evolutionSound;
+    private soundThread foodSound;
+    private soundThread namedSound;
+
     // 鳩ビーム用画像
     private Image beam_img;
     private Image food_img;
@@ -87,6 +91,8 @@ class PegeonClass extends Observable implements ActionListener {
     // *Limitを超えたら、進化させる。
     // すでに進化しているのなら、進化させない。
     public void food(int feednum) {
+        Thread sound = new Thread(this.foodSound);
+        sound.start();
         String foodFname = "";
         // まず、食べた餌の量をインクリメントする
         // 餌の画像を更新する
@@ -144,6 +150,9 @@ class PegeonClass extends Observable implements ActionListener {
         this.setImg("pegeon_small.png");
         this.crowsSound = new soundThread("poppoo.wav");
         this.beamSound = new soundThread("fm_shot4.wav");
+        this.evolutionSound = new soundThread("evolution.wav");
+        this.foodSound = new soundThread("delicious.wav");
+        this.namedSound = new soundThread("thanks.wav");
 
         this.name = null;
         this.t = 0;
@@ -179,7 +188,11 @@ class PegeonClass extends Observable implements ActionListener {
         }
     }
     public String getName() { return this.name; }
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        Thread sound = new Thread(this.namedSound);
+        sound.start();
+        this.name = name;
+    }
     public void setX(int x) { this.x = x; }
     public void setY(int y) { this.y = y; }
 
@@ -244,6 +257,8 @@ class PegeonClass extends Observable implements ActionListener {
 
     // 進化時のエフェクト
     private void evolution(Graphics g) {
+        Thread sound = new Thread(this.evolutionSound);
+        sound.start();
         g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 120));
         g.drawString("EVOLUTION!!", 20, 100);
     }

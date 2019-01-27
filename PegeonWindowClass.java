@@ -56,7 +56,7 @@ class PegeonWindowClass extends JFrame implements Observer {
             // bgm.WAV の引用元
             // [[http://www.music-note.jp/bgm/nature.html]]
             // 大自然のイメージ (壮大・爽やか) Africa
-            file = new File("./sound", "bgm.WAV");
+            file = new File("./sound", "bgm.wav");
             AudioInputStream audioIn;
             Clip clip;
             try {
