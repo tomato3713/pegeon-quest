@@ -26,6 +26,8 @@ class BarObservable extends Observable implements ActionListener {
         this.timer.start();
     }
     public void stop() {
-        this.timer.stop();
+        if( timer != null ) {
+            this.timer.stop();
+        }
     }
 }

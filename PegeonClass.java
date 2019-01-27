@@ -60,7 +60,7 @@ class PegeonClass extends Observable implements ActionListener {
         //                   |-----> javako ( Java )
         //                   |-----> nagaashigoso ( Report )
         //                   |-----> yasokukku ( Food )
-        private String kind = "normal";
+        public String kind = "normal";
         // 各餌の上げた回数
         private int java, food, report;
         // 各餌の進化するために必要な餌の数
@@ -142,7 +142,7 @@ class PegeonClass extends Observable implements ActionListener {
         this.setX(x);
         this.setY(y);
         this.setImg("pegeon_small.png");
-        this.crowsSound = new soundThread("poppoo.wav"); // 鳩の鳴き声を探す必要あり
+        this.crowsSound = new soundThread("poppoo.wav");
         this.beamSound = new soundThread("fm_shot4.wav");
 
         this.name = null;
@@ -224,8 +224,9 @@ class PegeonClass extends Observable implements ActionListener {
 
             if( getName() != null ) {
                 // もし鳩に名前がつけられていれば実行
-                g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 32)); // set Font
-                g.drawString(this.name, this.x + 50, this.y + 20); // draw pegeon name
+                g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 32));
+                g.setColor(Color.black);
+                g.drawString(this.name, this.x + 50, this.y + 10); // draw pegeon name
             }
 
             // 進化のエフェクトを追加

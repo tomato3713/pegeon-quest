@@ -1,50 +1,40 @@
-//package pegeon3;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.util.*;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.util.Observer;
 
-class PegeonControllWindowClass extends JFrame implements ActionListener,KeyListener, Observer {
+class PegeonControllWindowClass extends JFrame implements ActionListener, Observer {
     private TextFieldPanel log; //ログ
-    private JTextField command_area; //コマンドうつ場所
+    private CommandInputField command_area; //コマンドうつ場所
     private PegeonWindowClass pegeonWin; // メインのゲーム画面
-    private CommandListWindowClass cmdlistWin; // コマンドリスト
-    private ArrayList<String> history; //コマンドの履歴を保存
-    private int history_count; //コマンドの履歴の数
-    private AudioInputStream audioIn;
+    private CommandListWindowClass cmdlistWin;
+    private JScrollPane scroll;
     private PegeonClass pegeon; // 鳩本体
     private BarObservable observer;
+    private final String beam_command = "ぼしふみひぜしげてみもみずふもまうらてぼてがい ばれらぶおこつみわぶぼらぞはふちほてぬもくがさみよざみぐぶ";
 
     PegeonControllWindowClass(int basex, int basey, int x, int y, PegeonWindowClass pegeonWin, CommandListWindowClass cmdlistWin, BarObservable o) {
         observer = o;
         // 初期位置とサイズを指定
         this.setBounds(basex, basey, x, y);
+        this.setTitle("コマンド入力欄");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //初期化
-        this.setResizable(false);
         log = new TextFieldPanel();
-        command_area = new JTextField();
-        history = new ArrayList<String>();
-        history_count = 0;
+        command_area = new CommandInputField("ここに入力してください",x,23);
         pegeon = pegeonWin.getPanel().getPegeon();
         this.pegeonWin = pegeonWin;
         this.cmdlistWin = cmdlistWin;
         //スクロールバーを追加
         JScrollPane scroll = new JScrollPane(log);
-        scroll.setAutoscrolls(true);
         this.getContentPane().add(scroll);
         //コマンド打つ場所の追加
         this.add(command_area,BorderLayout.SOUTH);
         //イベント登録
         command_area.addActionListener(this);
-        command_area.addKeyListener(this);
         // 可視化
         this.setVisible(true);
     }
@@ -59,17 +49,19 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
             String[] commandlist = s.split("(\\s)+", 0);
             //コマンドのチェック
             commandCheck(commandlist);
-            history.add(command_area.getText());
-            history_count = history.size(); //遡ったヒストリー位置を一番最後に戻す
-            command_area.setText("");
         }
-
-
     }
     //コマンドのチェック
     void commandCheck(String[] commandlist){
         if (commandlist.length == 1) {
-            if (commandlist[0].equals("crows")) {
+            if (commandlist[0].equals("help")) {
+                new HelpWin(pegeonWin, this, cmdlistWin);
+                // 画面遷移
+                this.setVisible(false);
+                this.pegeonWin.setVisible(false);
+                this.cmdlistWin.setVisible(false);
+                this.reset();
+            } else if (commandlist[0].equals("crows")) {
                 log.addText(command_area.getText());
                 pegeon.crow();
                 observer.setValue(0);
@@ -85,16 +77,31 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
                 pegeon.food(3);
                 observer.setValue(0);
                 log.addText(command_area.getText());
+            } else if ( commandlist[0].equals("君に決めた")) {
+                if( pegeon.getState().kind.equals("normal") ) {
+                    // 進化していない
+                    new BadendnotevolutionClass();
+                } else {
+                    // 進化している
+                    if( pegeon.getName().equals("") ) {
+                        // 名前がない
+                        new BadendnotnameClass();
+                    } else {
+                        // 名前がある
+                        new PegeonQUESTCLEARClass();
+                    }
+                }
             } else if ((commandlist[0].equals("exit"))){
-                // BadendcloseClassを呼ぶ
                 new BadendcloseClass();
+
+                // 画面遷移
                 this.setVisible(false);
                 this.pegeonWin.setVisible(false);
                 this.cmdlistWin.setVisible(false);
                 this.reset();
 
                 // System.exit(0);
-            } else if ((commandlist[0].equals("beam"))){
+            } else if ((commandlist[0].equals(beam_command))){
                 // true が返ってきたなら、ok
                 // false が返って来たときは、yasokukku以外の状態のとき
                 if( pegeon.beam() ) {
@@ -102,6 +109,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
                 } else {
                     // TODO: Error
                 }
+                log.addText("Beam!");
             } else if ((commandlist[0].equals("restart"))){
                 //初期化して消す？
                 this.reset();
@@ -109,6 +117,10 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
                 observer.start();
             } else {
                 log.addText("Error!");
+                //	System.out.println("error!");
+                soundThread sound = new soundThread("/koke.wav");
+                Thread th  = new Thread(sound);
+                th.start();
             }
         } else if (commandlist.length == 2) {
             if (commandlist[0].equals("setChildren")) {
@@ -117,18 +129,106 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
                 observer.setValue(0);
             } else {
                 log.addText("Error!");
+                soundThread sound = new soundThread("koke.wav");
+                Thread th  = new Thread(sound);
+                th.start();
             }
         } else {
             log.addText("Error!");
+            soundThread sound = new soundThread("koke.wav");
+            Thread th  = new Thread(sound);
+            th.start();
         }
     }
-
     private void reset(){
-        // メインゲーム画面のリセット
+        command_area.reset_history();
+        log.resetText();
         pegeon.reset();
-        // bar のリセット
         observer.stop();
         observer.setValue(0);
+    }
+    // 進捗バーが100%以上になったので、ゲームオーバー
+    public void update(Observable o, Object r) {
+        new GAMEOVERClass();
+        this.reset();
+        this.setVisible(false);
+        this.pegeonWin.setVisible(false);
+        this.cmdlistWin.setVisible(false);
+    }
+}
+
+class TextFieldPanel extends JPanel{
+    TextFieldPanel(){
+        this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
+    }
+    //入力されたコマンドをセット
+    public void addText(String s){
+        String[] print_commands  = s.trim().split("(\\s)+ ",0);
+        String command = "";
+        for(String tmp: print_commands){
+            command += " " + tmp;
+        }
+        JLabel command_label = new JLabel(command);
+        command_label.setFont(new Font("Arial",Font.BOLD,23));
+        this.add(command_label);
+        this.revalidate();
+    }
+    public void resetText(){
+        this.removeAll();
+        this.repaint();
+    }
+
+}
+
+
+//ヒストリー機能と透過文字がはいったテキストフィールド
+class CommandInputField extends JTextField implements FocusListener,ActionListener,KeyListener{
+    private String helpmsg="";
+    private String bakstr="";
+    private ArrayList<String> history;
+    private int history_count;
+
+    CommandInputField(String msg,int x,int y){
+        helpmsg = msg;
+        history_count = 0;
+        history = new ArrayList<String>();
+        addFocusListener(this);
+        addActionListener(this);
+        addKeyListener(this);
+        this.setPreferredSize(new Dimension(x,y));
+        this.setFont(new Font("東風ゴシック",Font.PLAIN,y));
+    }
+    public void reset_history(){
+        history = new ArrayList<String>();
+        history_count = 1;
+    }
+    void drawmsg(){
+        setForeground(Color.LIGHT_GRAY);
+        setText(helpmsg);
+    }
+    @Override
+    public void focusGained(FocusEvent e) {
+        setForeground(Color.black);
+        setText(bakstr);
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        bakstr = getText();
+        if(bakstr.equals("")){
+            drawmsg();
+        }
+    }
+    @Override
+    public void paste(){
+        return;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        history.add(this.getText());
+        history_count = history.size();
+        this.setText("");
     }
 
     @Override
@@ -140,14 +240,14 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
         switch (e.getKeyCode()){
             case KeyEvent.VK_UP:
                 if(history_count>0){
-                    command_area.setText(history.get(history_count-1));
+                    this.setText(history.get(history_count-1));
                     if(history_count>0)history_count--;
                 }
                 break;
             case KeyEvent.VK_DOWN:
                 if(history_count < history.size()){
                     if(history_count< history.size()-1)history_count++;
-                    command_area.setText(history.get(history_count));
+                    this.setText(history.get(history_count));
                 }
                 break;
         }
@@ -160,24 +260,5 @@ class PegeonControllWindowClass extends JFrame implements ActionListener,KeyList
     public void update(Observable o, Object r) {
         // TODO: ゲームオーバー時の処理を追加
         new GAMEOVERClass();
-    }
-}
-
-class TextFieldPanel extends JPanel{
-    TextFieldPanel(){
-        this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
-    }
-    //入力されたコマンドをセット
-    public void addText(String s){
-        //command_history.add(s);
-        String[] print_commands  = s.trim().split("(\\s)+ ",0);
-        String command = "";
-        for(String tmp: print_commands){
-            command += " " + tmp;
-        }
-        JLabel command_label = new JLabel(command);
-        command_label.setFont(new Font("Arial",Font.BOLD,18));
-        this.add(command_label);
-        this.revalidate();
     }
 }
