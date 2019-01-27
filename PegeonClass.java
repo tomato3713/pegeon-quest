@@ -17,9 +17,6 @@ class PegeonClass extends Observable implements ActionListener {
     // 鳩の位置を決定する変数
     private double t;
 
-    // 画像データを格納する変数
-    private Image img;
-
     // *Effect が true のときに、エフェクトの文字を表示する
     private boolean changeEffect = false;
     private boolean beamEffect = false;
@@ -51,7 +48,6 @@ class PegeonClass extends Observable implements ActionListener {
 
     public void reset() {
         this.state = new State();
-        this.setImg("pegeon_small.png");
     }
 
     //　各餌の摂取状態を管理するためのクラス
@@ -69,11 +65,14 @@ class PegeonClass extends Observable implements ActionListener {
         private final int javaLimit = 5, reportLimit = 4, foodLimit = 3;
         // 鳩の名前
         private String name;
+        // 鳩の画像
+        private Image img;
         State() {
             this.java = 0;
             this.food = 0;
             this.report = 0;
             this.name = null;
+            this.setImg("pegeon_small.png");
         }
         // draw function draw the state
         private void draw(Graphics g, int x, int y) {
@@ -83,7 +82,17 @@ class PegeonClass extends Observable implements ActionListener {
                 g.drawString("Java:" + this.java, x, y);
                 g.drawString("Food:" + this.food, x, y + 35);
                 g.drawString("Report:" + this.report, x, y + 35 * 2);
-                // g.drawRect(x, y, 130, 100);
+            }
+        }
+        // 画像の読み込みは渡されたファイル名をimgディレクトリ以下から探す
+        public void setImg(String fname) {
+            String path = new File("./img", fname).getPath();
+            try {
+                this.img = Toolkit.getDefaultToolkit().getImage(path);
+            } catch (Exception e) {
+                // 画像ファイルが存在しない。
+                // 読み込み不可能なファイル形式である可能性がある。
+                e.printStackTrace();
             }
         }
     }
@@ -92,8 +101,7 @@ class PegeonClass extends Observable implements ActionListener {
     // *Limitを超えたら、進化させる。
     // すでに進化しているのなら、進化させない。
     public void food(int feednum) {
-        Thread sound = new Thread(this.foodSound);
-        sound.start();
+        String pre = this.state.kind;
         String foodFname = "";
         // まず、食べた餌の量をインクリメントする
         // 餌の画像を更新する
@@ -111,15 +119,15 @@ class PegeonClass extends Observable implements ActionListener {
         if( state.kind == "normal" ) {
             // 進化するかを判定
             if (this.state.java >= state.javaLimit) {
-                setImg("javako.png"); this.changeEffect = true;
+                this.state.setImg("javako.png"); this.changeEffect = true;
                 state.kind = "javako";
             }
             if (this.state.food >= state.foodLimit) {
-                setImg("yasokukku.png"); this.changeEffect = true;
+                this.state.setImg("yasokukku.png"); this.changeEffect = true;
                 state.kind = "yasokukku";
             }
             if (this.state.report >= state.reportLimit) {
-                setImg("nagaashigoso.png");  this.changeEffect = true;
+                this.state.setImg("nagaashigoso.png");  this.changeEffect = true;
                 state.kind = "nagaashigoso";
             }
             if( state.kind != "normal" ){
@@ -142,13 +150,17 @@ class PegeonClass extends Observable implements ActionListener {
         this.foodVisible = true;
         this.foodTimer = new Timer(1000, this);
         this.foodTimer.start();
+
+        if ( pre == this.state.kind ) {
+            Thread sound = new Thread(this.foodSound);
+            sound.start();
+        }
     }
 
     PegeonClass(int x, int y) {
         state = new State();
         this.setX(x);
         this.setY(y);
-        this.setImg("pegeon_small.png");
         this.crowsSound = new soundThread("poppoo.wav");
         this.beamSound = new soundThread("fm_shot4.wav");
         this.evolutionSound = new soundThread("evolution.wav");
@@ -176,17 +188,6 @@ class PegeonClass extends Observable implements ActionListener {
     public int getY() { return this.y; }
 
     // setter
-    // 画像の読み込みは渡されたファイル名をimgディレクトリ以下から探す
-    public void setImg(String fname) {
-        String path = new File("./img", fname).getPath();
-        try {
-            this.img = Toolkit.getDefaultToolkit().getImage(path);
-        } catch (Exception e) {
-            // 画像ファイルが存在しない。
-            // 読み込み不可能なファイル形式である可能性がある。
-            e.printStackTrace();
-        }
-    }
     public String getName() { return this.state.name; }
     public void setName(String name) {
         Thread sound = new Thread(this.namedSound);
@@ -217,10 +218,10 @@ class PegeonClass extends Observable implements ActionListener {
             // 鳩が進む方向に鳩の頭を向ける
             if ( this.getX() < futureX ) {
                 // 左右反転させて描画
-                int width = img.getWidth(null);
-                int height = img.getHeight(null);
+                int width = this.state.img.getWidth(null);
+                int height = this.state.img.getHeight(null);
                 this.setX(futureX); this.setY(futureY);
-                g.drawImage(img, this.getX(), this.getY(), -1 * width, height, null);
+                g.drawImage(this.state.img, this.getX(), this.getY(), -1 * width, height, null);
 
                 if( this.foodVisible ) {
                     g.drawImage(food_img, this.getX() + 50, this.getY() - 20, null);
@@ -228,7 +229,7 @@ class PegeonClass extends Observable implements ActionListener {
 
             } else {
                 this.setX(futureX); this.setY(futureY);
-                g.drawImage(this.img, getX(), getY(), null);
+                g.drawImage(this.state.img, getX(), getY(), null);
 
                 if( this.foodVisible ) {
                     g.drawImage(food_img, this.getX() - 100, this.getY(), null);

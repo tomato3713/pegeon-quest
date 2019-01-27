@@ -37,6 +37,8 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
         command_area.addActionListener(this);
         // 可視化
         this.setVisible(true);
+
+        this.command_area.requestFocus();
     }
 
     //入力文字列の処理
@@ -57,7 +59,6 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
             if (commandlist[0].equals("help")) {
                 new HelpWin(pegeonWin, this, cmdlistWin);
                 this.setAllVisible(false);
-                this.reset();
             } else if (commandlist[0].equals("crows")) {
                 log.addText(command_area.getText());
                 pegeon.crow();
@@ -89,14 +90,14 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
                         new PegeonQUESTCLEARClass();
                     }
                 }
+                this.setAllVisible(false);
+                this.reset();
             } else if ((commandlist[0].equals("exit"))){
                 // exitした場合は、鳩の世話を途中で投げ出したということでバッドエンド画面に遷移する
                 new BadendcloseClass();
                 // 画面遷移
                 this.setAllVisible(false);
                 this.reset();
-
-                // System.exit(0);
             } else if ((commandlist[0].equals(beam_command))){
                 // true が返ってきたなら、ok
                 // false が返って来たときは、yasokukku以外の状態のとき

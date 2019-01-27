@@ -11,6 +11,7 @@ class HelpWin extends JFrame implements KeyListener {
     PegeonWindowClass pegeonWin;
     PegeonControllWindowClass pegeonctlWin;
     CommandListWindowClass cmdlistWin;
+    // もとの画面に戻って来る必要があるため、３つの画面への参照を渡す
     public HelpWin(PegeonWindowClass pegeonWin, PegeonControllWindowClass pegeonctlWin, CommandListWindowClass cmdlistWin){
         this.pegeonWin = pegeonWin;
         this.pegeonctlWin = pegeonctlWin;
@@ -41,6 +42,7 @@ class HelpWin extends JFrame implements KeyListener {
                 this.pegeonWin.setVisible(true);
                 this.pegeonctlWin.setVisible(true);
                 this.cmdlistWin.setVisible(true);
+                this.cmdlistWin.requestFocus();
                 break;
         }
         repaint();

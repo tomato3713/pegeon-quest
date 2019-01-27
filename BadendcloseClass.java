@@ -36,7 +36,7 @@ class BadendcloseClass extends JFrame implements KeyListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_ENTER:
                 this.setVisible(false);
-		titlewindow = new TitleClass();
+                titlewindow = new TitleClass();
                 break;
         }
         repaint();
