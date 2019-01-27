@@ -71,7 +71,7 @@ class PegeonClass extends Observable implements ActionListener {
             this.java = 0;
             this.food = 0;
             this.report = 0;
-            this.name = null;
+            this.name = "";
             this.setImg("pegeon_small.png");
         }
         // draw function draw the state
@@ -153,6 +153,10 @@ class PegeonClass extends Observable implements ActionListener {
 
         if ( pre == this.state.kind ) {
             Thread sound = new Thread(this.foodSound);
+            sound.start();
+        } else {
+            // 進化時は別の音声を再生する
+            Thread sound = new Thread(this.evolutionSound);
             sound.start();
         }
     }
@@ -243,7 +247,7 @@ class PegeonClass extends Observable implements ActionListener {
                 g.drawString(this.state.name, this.x + 50, this.y + 10); // draw pegeon name
             }
 
-            // 進化のエフェクトを追加
+            // 進化のエフェクトを描画
             if( this.changeEffect ) { evolution(g); }
 
             // 状態を表示
@@ -258,8 +262,6 @@ class PegeonClass extends Observable implements ActionListener {
 
     // 進化時のエフェクト
     private void evolution(Graphics g) {
-        Thread sound = new Thread(this.evolutionSound);
-        sound.start();
         g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 120));
         g.drawString("EVOLUTION!!", 20, 100);
     }

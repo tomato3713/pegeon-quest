@@ -24,14 +24,18 @@ class soundThread implements Runnable {
             clip = (Clip)AudioSystem.getLine(dataLine);
 
             clip.open(audioIn);
+
+            long frameLen = audioIn.getFrameLength(); // 総フレーム数
+            float frameNum = af.getSampleRate(); // 1秒あたりのフレーム数
+
             clip.start();
-            Thread.sleep(10000); // スレッドが止まると音の再生が止まってしまうので、スレッドをスリープさせる
+            Thread.sleep((int) (frameLen/frameNum * 1000) ); // スレッドが止まると音の再生が止まってしまうので、スレッドをスリープさせる
+
             clip.close();
         } catch (Exception e) {
             // オーディオファイルが存在しない。
             // 読み込み不可能な形式である可能性がある。
             e.printStackTrace();
         }
-
     }
 }
