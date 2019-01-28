@@ -19,13 +19,13 @@ class HelpWin extends JFrame implements KeyListener {
 
         JPanel p = new JPanel();
         JLabel label = new JLabel();
-        ImageIcon icon = new ImageIcon("./img/help-1.png");
+        ImageIcon icon = new ImageIcon("./img/help.png");
         label.setIcon(icon);
         p.add(label);
         Container contentPane = getContentPane();
         contentPane.add(p, BorderLayout.CENTER);
 
-        this.setBounds(150, 150, 1206, 700);
+        this.setBounds(150, 150, 1200, 690);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
 
