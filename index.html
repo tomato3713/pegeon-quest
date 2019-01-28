@@ -3,24 +3,37 @@
     <head>
         <meta charset="utf-8" />
         <title>PegeonQuest</title>
-        <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     </head>
     <body>
-        <div>Linux上での動作は確認しています。</div>
-        <a href="https://homedm.eim.world/pegeon-quest/PegeonQuest" download>ダウンロード(PegeonQuest 実行ファイル)</a>
+        <h1>Pegeon Quest - 最強の鳩を目指して -</h1>
+        <h2>実行方法</h2>
+        <ol>
+            <li>
+                <div>次の ZIP ファイルをダウンロードしてください。</div>
+                <a href="https://github.com/homedm/pegeon-quest/archive/master.zip" download>ダウンロード (PegeonQuest)</a>
+            </li>
+            <li>
+                <div>
+                    Java のバージョンは JDK 1.10.1 となっています。
+                    PegeonQuest ディレクトリにある PegeonQuest.jar を実行します。
+                    実行方法は各 OS のやり方に従ってください。
+                </div>
+            </li>
+        </ol>
 
-        <h1>ソースコードから実行ファイルを生成する手順</h1>
+        <h2>ソースコードから実行ファイルを生成する手順</h2>
         <ol>
             <li>
                 <div><a href="https://github.com/homedm/pegeon-quest">GitHub リポジトリ</a>をクローンまたはダウンロードします。</div>
                 <pre><code>git clone https://github.com/homedm/pegeon-quest pegeon-quest</code></pre>
             </li>
             <li>
-                <div>prjディレクトリに移動します。</div>
+                <div>prj ディレクトリに移動します。</div>
                 <pre><code>cd pegeon-quest/prj</code></pre>
             </li>
             <li>
-                <div>実行ファイル生成用のスクリプトを実行します。../PegeonQuest/ディレクトリに実行用のjarファイルと実行に必要なりソースがコピーされます。</div>
+                <div>実行ファイル生成用のスクリプトを実行します。../PegeonQuest/ ディレクトリに実行用の jar ファイルと実行に必要なりソースがコピーされます。</div>
                 <pre><code>./build.sh</code></pre>
             </li>
         </ol>
