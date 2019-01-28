@@ -13,10 +13,10 @@ if [ $? -eq 0 ]; then
     jar cfm PegeonQuest.jar manifest.txt *.class
 
     # move dir
-    cp PegeonQuest.jar ../bin
-    cp -r img ../bin
-    cp -r sound ../bin
-    cp media.html ../bin
+    cp PegeonQuest.jar ../PegeonQuest
+    cp -r img ../PegeonQuest
+    cp -r sound ../PegeonQuest
+    cp media.html ../PegeonQuest
 
     echo "Success: Will you execute PegeonQuest.jar file? [Y/n]"
     read ANSWER
@@ -24,7 +24,7 @@ if [ $? -eq 0 ]; then
     case $ANSWER in
         "" | "Y" | "y" | "yes" | "Yes" | "YES" )
             echo "YES!! Execute: java -jar PegeonQuest.jar"
-            cd ../bin
+            cd ../PegeonQuest
             java -jar PegeonQuest.jar
             ;;
         * )
