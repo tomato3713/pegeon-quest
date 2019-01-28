@@ -35,9 +35,9 @@ class TitleClass extends JFrame implements KeyListener {
             case KeyEvent.VK_ENTER:
                 this.setVisible(false);
                 barObservable = new BarObservable();
-                pegeonWindow = new PegeonWindowClass(500, 100, 700, 575, barObservable);
-                commandListWindow = new CommandListWindowClass(50, 100, 325, 350);
-                pegeonControllWindow = new PegeonControllWindowClass(50, 460, 400, 250, pegeonWindow, commandListWindow, barObservable);
+                pegeonWindow = new PegeonWindowClass(480, 100, 700, 550, barObservable);
+                commandListWindow = new CommandListWindowClass(110, 100, 360, 305);
+                pegeonControllWindow = new PegeonControllWindowClass(50, 415, 403, 235, pegeonWindow, commandListWindow, barObservable);
 
                 // 進捗バーの値が変化したときにpegeonWindowと
                 // pegeonControllWindowに通知を送る.

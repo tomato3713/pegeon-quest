@@ -11,10 +11,11 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
     private CommandInputField command_area; //コマンドうつ場所
     private PegeonWindowClass pegeonWin; // メインのゲーム画面
     private CommandListWindowClass cmdlistWin;
-    private JScrollPane scroll;
+    private AutoScrollPane scroll;
     private PegeonClass pegeon; // 鳩本体
     private BarObservable observer;
-    private final String beam_command = "ぼしふみひぜしげてみもみずふもまうらてぼてがい ばれらぶおこつみわぶぼらぞはふちほてぬもくがさみよざみぐぶ";
+    private boolean start = false;
+    private final String beam_command = "youarethe'strongestpegeon`";
 
     PegeonControllWindowClass(int basex, int basey, int x, int y, PegeonWindowClass pegeonWin, CommandListWindowClass cmdlistWin, BarObservable o) {
         observer = o;
@@ -29,7 +30,8 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
         this.pegeonWin = pegeonWin;
         this.cmdlistWin = cmdlistWin;
         //スクロールバーを追加
-        JScrollPane scroll = new JScrollPane(log);
+        scroll = new AutoScrollPane(log);
+        log.addText("Press Start!");
         this.getContentPane().add(scroll);
         //コマンド打つ場所の追加
         this.add(command_area,BorderLayout.SOUTH);
@@ -40,26 +42,49 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
 
         this.command_area.requestFocus();
     }
-
     //入力文字列の処理
     @Override
     public void actionPerformed(ActionEvent ev) {
-        if (ev.getSource() == command_area) {
-            //コマンドの文字列を受け取る
-            String s = command_area.getText().trim();
-            //正規表現を訂正
-            String[] commandlist = s.split("(\\s)+", 0);
-            //コマンドのチェック
-            commandCheck(commandlist);
-        }
+        //コマンドの文字列を受け取る
+        String s = command_area.getText().trim();
+        if(s.equals(""))return;
+        //正規表現を訂正
+        String[] commandlist = s.split("(\\s)+", 0);
+        //コマンドのチェック
+        commandCheck(commandlist);
+        scroll.getVerticalScrollBar().setValue(0);
+        scroll.getViewport().scrollRectToVisible(new Rectangle(0,Integer.MAX_VALUE-1,1,1));
     }
     //コマンドのチェック
     void commandCheck(String[] commandlist){
+        if(commandlist[0].equals("exit")){
+            // exitした場合は、鳩の世話を途中で投げ出したということでバッドエンド画面に遷移する
+            new BadendcloseClass();
+            // 画面遷移
+            this.setAllVisible(false);
+            this.reset();
+        }
+        if(commandlist[0].equals("help")){
+            new HelpWin(pegeonWin, this, cmdlistWin);
+            this.setAllVisible(false);
+            observer.stop();
+            start = false;
+        }
+        if(start == false) {
+            if(commandlist[0].equals("start")){
+                observer.start();
+                start = true;
+                command_area.set_Start();
+                log.addText("Start!");
+                return;
+            }else{
+                command_area.reset_history();
+                log.addText("Press start!");
+                return;
+            }
+        }
         if (commandlist.length == 1) {
-            if (commandlist[0].equals("help")) {
-                new HelpWin(pegeonWin, this, cmdlistWin);
-                this.setAllVisible(false);
-            } else if (commandlist[0].equals("crows")) {
+            if (commandlist[0].equals("crows")) {
                 log.addText(command_area.getText());
                 pegeon.crow();
                 observer.setValue(0);
@@ -92,13 +117,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
                 }
                 this.setAllVisible(false);
                 this.reset();
-            } else if ((commandlist[0].equals("exit"))){
-                // exitした場合は、鳩の世話を途中で投げ出したということでバッドエンド画面に遷移する
-                new BadendcloseClass();
-                // 画面遷移
-                this.setAllVisible(false);
-                this.reset();
-            } else if ((commandlist[0].equals(beam_command))){
+            }  else if ((commandlist[0].equals(beam_command))){
                 // true が返ってきたなら、ok
                 // false が返って来たときは、yasokukku以外の状態のとき
                 if( pegeon.beam() ) {
@@ -107,11 +126,9 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
                     // TODO: Error
                 }
                 log.addText("Beam!");
-            } else if ((commandlist[0].equals("restart"))){
+            } else if ((commandlist[0].equals("reset"))){
                 //初期化して消す？
                 this.reset();
-            } else if( commandlist[0].equals("start")) {
-                observer.start();
             } else {
                 log.addText("Error!");
                 //	System.out.println("error!");
@@ -143,6 +160,8 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
         pegeon.reset();
         observer.stop();
         observer.setValue(0);
+        this.start = false;
+        command_area.set_Start();
     }
     // 進捗バーが100%以上になったので、ゲームオーバー
     public void update(Observable o, Object r) {
@@ -187,6 +206,8 @@ class CommandInputField extends JTextField implements FocusListener,ActionListen
     private String bakstr="";
     private ArrayList<String> history;
     private int history_count;
+    private boolean start=false; //kakikomikyoka
+
 
     CommandInputField(String msg,int x,int y){
         helpmsg = msg;
@@ -198,6 +219,15 @@ class CommandInputField extends JTextField implements FocusListener,ActionListen
         this.setPreferredSize(new Dimension(x,y));
         this.setFont(new Font("東風ゴシック",Font.PLAIN,y));
     }
+
+    public void set_Start(){
+        if(start){
+            start = false;
+        }else{
+            start = true;
+        }
+    }
+
     public void reset_history(){
         history = new ArrayList<String>();
         history_count = 1;
@@ -226,7 +256,11 @@ class CommandInputField extends JTextField implements FocusListener,ActionListen
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        history.add(this.getText());
+        if(this.getText().trim().equals("")) {
+            this.setText("");
+            return;
+        }
+        if(start) history.add(this.getText());
         history_count = history.size();
         this.setText("");
     }
@@ -240,14 +274,17 @@ class CommandInputField extends JTextField implements FocusListener,ActionListen
         switch (e.getKeyCode()){
             case KeyEvent.VK_UP:
                 if(history_count>0){
-                    this.setText(history.get(history_count-1));
-                    if(history_count>0)history_count--;
+                    history_count--;
+                    this.setText(history.get(history_count));
                 }
                 break;
             case KeyEvent.VK_DOWN:
-                if(history_count < history.size()){
-                    if(history_count< history.size()-1)history_count++;
+                if(history_count < history.size()-1) {
+                    history_count++;
                     this.setText(history.get(history_count));
+                } else if(history_count == history.size()-1){
+                    this.setText("");
+                    history_count++;
                 }
                 break;
         }
@@ -260,5 +297,17 @@ class CommandInputField extends JTextField implements FocusListener,ActionListen
     public void update(Observable o, Object r) {
         // TODO: ゲームオーバー時の処理を追加
         new GAMEOVERClass();
+    }
+}
+
+class AutoScrollPane extends JScrollPane{
+    AutoScrollPane(TextFieldPanel log){
+        super(log);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run(){
+                AutoScrollPane.super.horizontalScrollBar.setValue(AutoScrollPane.super.horizontalScrollBar.getMaximum());
+            }
+        });
     }
 }
