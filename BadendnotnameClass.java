@@ -30,6 +30,10 @@ class BadendnotnameClass extends JFrame implements KeyListener {
 
         this.setTitle("Pegeon QUEST");
         addKeyListener(this);
+
+        // エンド画面の音声再生
+        Thread sound = new Thread(new soundThread("namaetuketeyo.wav"));
+        sound.start();
     }
 
     public void keyPressed(KeyEvent e){
