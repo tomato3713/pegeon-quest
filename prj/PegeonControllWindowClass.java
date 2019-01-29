@@ -121,11 +121,11 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
                 // true が返ってきたなら、ok
                 // false が返って来たときは、yasokukku以外の状態のとき
                 if( pegeon.beam() ) {
-                    observer.setValue(0);
+                    log.addText("Beam!");
                 } else {
-                    // TODO: Error
+                    log.addText("この鳩ではない");
                 }
-                log.addText("Beam!");
+                observer.setValue(0);
             } else if ((commandlist[0].equals("reset"))){
                 //初期化して消す？
                 this.reset();
