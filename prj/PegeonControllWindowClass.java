@@ -31,7 +31,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
         this.cmdlistWin = cmdlistWin;
         //スクロールバーを追加
         scroll = new AutoScrollPane(log);
-        log.addText("Press Start!");
+        log.addText("Enter start!");
         this.getContentPane().add(scroll);
         //コマンド打つ場所の追加
         this.add(command_area,BorderLayout.SOUTH);
@@ -79,7 +79,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
                 return;
             }else{
                 command_area.reset_history();
-                log.addText("Press start!");
+                log.addText("Enter start!");
                 return;
             }
         }
