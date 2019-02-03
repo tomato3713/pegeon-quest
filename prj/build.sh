@@ -10,13 +10,9 @@
 javac *.java
 
 if [ $? -eq 0 ]; then
-    jar cfm PegeonQuest.jar manifest.txt *.class
-
+    jar cfm PegeonQuest.jar manifest.txt *.class img/* sound/* media.html
     # move dir
     cp PegeonQuest.jar ../PegeonQuest
-    cp -r img ../PegeonQuest
-    cp -r sound ../PegeonQuest
-    cp media.html ../PegeonQuest
 
     echo "Success: Will you execute PegeonQuest.jar file? [Y/n]"
     read ANSWER
