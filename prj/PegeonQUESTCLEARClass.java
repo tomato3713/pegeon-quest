@@ -18,7 +18,7 @@ class PegeonQUESTCLEARClass extends JFrame implements KeyListener {
     public PegeonQUESTCLEARClass(){
         JPanel p = new JPanel();
         JLabel label = new JLabel();
-        ImageIcon icon = new ImageIcon("./img/PegeonQUESTCLEAR.jpg");
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/PegeonQUESTCLEAR.jpg"));
         label.setIcon(icon);
         p.add(label);
         Container contentPane = getContentPane();

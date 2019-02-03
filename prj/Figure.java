@@ -8,6 +8,7 @@ import java.*;
 import java.awt.Image;
 import java.awt.Graphics;
 import java.io.File;
+import java.net.URL;
 
 // 画像を描画するクラスの雛形となるクラス
 class Figure {
@@ -32,9 +33,9 @@ class Figure {
     }
     // 画像の読み込みは渡されたファイル名をimgディレクトリ以下から探す
     public void setImg(String fname) {
-        String path = new File("./img", fname).getPath();
+        URL url = getClass().getResource("/img/" + fname);
         try {
-            this.img = Toolkit.getDefaultToolkit().getImage(path);
+            this.img = Toolkit.getDefaultToolkit().getImage(url);
         } catch (Exception e) {
             // 画像ファイルが存在しない。
             // 読み込み不可能なファイル形式である可能性がある。

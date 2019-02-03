@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.net.URL;
 
 // コマンド一覧を表示するウィンドウ
 class CommandListWindowClass extends JFrame{
@@ -13,8 +14,9 @@ class CommandListWindowClass extends JFrame{
         StringBuffer text = new StringBuffer();
         try{
             //こちらが
-            FileReader html_reader = new FileReader("media.html");
-            BufferedReader tmp = new BufferedReader(html_reader);
+            URL url = getClass().getResource("media.html");
+            // FileReader html_reader = new FileReader(url);
+            BufferedReader tmp = new BufferedReader(new InputStreamReader(url.openStream()));
             String line;
             while((line = tmp.readLine()) != null){
                 text.append(line + "\n");

@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.File;
 import java.util.Observable;
+import java.net.URL;
 
 // 鳩を定義するクラス
 class PegeonClass extends Observable implements ActionListener {
@@ -86,9 +87,9 @@ class PegeonClass extends Observable implements ActionListener {
         }
         // 画像の読み込みは渡されたファイル名をimgディレクトリ以下から探す
         public void setImg(String fname) {
-            String path = new File("./img", fname).getPath();
+            URL url = getClass().getResource("/img/" + fname);
             try {
-                this.img = Toolkit.getDefaultToolkit().getImage(path);
+                this.img = Toolkit.getDefaultToolkit().getImage(url);
             } catch (Exception e) {
                 // 画像ファイルが存在しない。
                 // 読み込み不可能なファイル形式である可能性がある。
@@ -137,9 +138,9 @@ class PegeonClass extends Observable implements ActionListener {
         }
 
         // 画像ファイルを読み込む
-        String path = new File("./img",foodFname).getPath();
         try {
-            this.food_img = Toolkit.getDefaultToolkit().getImage(path);
+            URL url = getClass().getResource("/img/" + foodFname);
+            this.food_img = Toolkit.getDefaultToolkit().getImage(url);
         } catch (Exception e) {
             // 画像ファイルが存在しない。
             // 読み込み不可能なファイル形式である可能性がある。
@@ -174,9 +175,9 @@ class PegeonClass extends Observable implements ActionListener {
         this.t = 0;
 
         // 鳩ビーム用画像の読み込み
-        String path = new File("./img", "yasokukku-beam.png").getPath();
+        URL url = getClass().getResource("/img/yasokukku-beam.png");
         try {
-            this.beam_img = Toolkit.getDefaultToolkit().getImage(path);
+            this.beam_img = Toolkit.getDefaultToolkit().getImage(url);
         } catch (Exception e) {
             // 画像ファイルが存在しない。
             // 読み込み不可能なファイル形式である可能性がある。

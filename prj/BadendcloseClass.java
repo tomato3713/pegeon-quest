@@ -18,7 +18,7 @@ class BadendcloseClass extends JFrame implements KeyListener {
     public BadendcloseClass(){
         JPanel p = new JPanel();
         JLabel label = new JLabel();
-        ImageIcon icon = new ImageIcon("./img/BADENDclose.jpg");
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/BADENDclose.jpg"));
         label.setIcon(icon);
         p.add(label);
         Container contentPane = getContentPane();

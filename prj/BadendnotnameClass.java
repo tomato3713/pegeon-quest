@@ -18,7 +18,7 @@ class BadendnotnameClass extends JFrame implements KeyListener {
     public BadendnotnameClass(){
         JPanel p = new JPanel();
         JLabel label = new JLabel();
-        ImageIcon icon = new ImageIcon("./img/BADENDnotname.jpg");
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/BADENDnotname.jpg"));
         label.setIcon(icon);
         p.add(label);
         Container contentPane = getContentPane();

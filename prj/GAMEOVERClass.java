@@ -18,7 +18,7 @@ class GAMEOVERClass extends JFrame implements KeyListener {
     public GAMEOVERClass(){
         JPanel p = new JPanel();
         JLabel label = new JLabel();
-        ImageIcon icon = new ImageIcon("./img/GAMEOVER.jpg");
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/GAMEOVER.jpg"));
         label.setIcon(icon);
         p.add(label);
         Container contentPane = getContentPane();

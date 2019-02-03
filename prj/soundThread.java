@@ -5,18 +5,23 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.Clip;
+import java.net.URL;
+import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.BufferedInputStream;
 
 class soundThread implements Runnable {
-    File file;
+    URL url;
     public soundThread(String fname) {
-        this.file = new File("./sound", fname);
+        this.url = getClass().getResource("/sound/" + fname);
     }
     @Override
     public void run() {
         AudioInputStream audioIn;
         Clip clip;
         try {
-            audioIn = AudioSystem.getAudioInputStream(this.file);
+            InputStream is = this.url.openStream();
+            audioIn = AudioSystem.getAudioInputStream(new BufferedInputStream(is));
             AudioFormat af = audioIn.getFormat();
 
             DataLine.Info dataLine = new DataLine.Info(Clip.class, af);

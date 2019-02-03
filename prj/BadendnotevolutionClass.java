@@ -18,7 +18,7 @@ class BadendnotevolutionClass extends JFrame implements KeyListener {
     public BadendnotevolutionClass(){
         JPanel p = new JPanel();
         JLabel label = new JLabel();
-        ImageIcon icon = new ImageIcon("./img/Badendnotevolution.jpg");
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/Badendnotevolution.jpg"));
         label.setIcon(icon);
         p.add(label);
         Container contentPane = getContentPane();

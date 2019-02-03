@@ -11,6 +11,8 @@ import javax.sound.sampled.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.io.InputStream;
+import java.io.BufferedInputStream;
 import java.net.URL;
 
 import java.util.Observer;
@@ -61,7 +63,8 @@ class PegeonWindowClass extends JFrame implements Observer {
                 url = getClass().getResource("/sound/bgm.wav");
                 AudioInputStream audioIn;
                 try {
-                    audioIn = AudioSystem.getAudioInputStream(this.url);
+                    InputStream is = this.url.openStream();
+                    audioIn = AudioSystem.getAudioInputStream(new BufferedInputStream(is));
                     AudioFormat af = audioIn.getFormat();
 
                     DataLine.Info dataLine = new DataLine.Info(Clip.class, af);

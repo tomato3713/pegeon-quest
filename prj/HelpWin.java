@@ -19,7 +19,7 @@ class HelpWin extends JFrame implements KeyListener {
 
         JPanel p = new JPanel();
         JLabel label = new JLabel();
-        ImageIcon icon = new ImageIcon("./img/help.png");
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/help.png"));
         label.setIcon(icon);
         p.add(label);
         Container contentPane = getContentPane();

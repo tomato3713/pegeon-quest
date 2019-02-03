@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-import java.net.URL;
 
 class TitleClass extends JFrame implements KeyListener {
     public PegeonWindowClass pegeonWindow;
@@ -17,8 +16,7 @@ class TitleClass extends JFrame implements KeyListener {
     public TitleClass(){
         JPanel p = new JPanel();
         JLabel label = new JLabel();
-        URL url = getClass().getResource("/img/title1000700.jpg");
-        ImageIcon icon = new ImageIcon(url);
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/title1000700.jpg"));
         label.setIcon(icon);
         p.add(label);
         Container contentPane = getContentPane();

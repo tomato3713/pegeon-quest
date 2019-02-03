@@ -132,7 +132,7 @@ class PegeonControllWindowClass extends JFrame implements ActionListener, Observ
             } else {
                 log.addText("Error!");
                 //	System.out.println("error!");
-                soundThread sound = new soundThread("/koke.wav");
+                soundThread sound = new soundThread("koke.wav");
                 Thread th  = new Thread(sound);
                 th.start();
             }
