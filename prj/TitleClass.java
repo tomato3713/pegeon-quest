@@ -18,7 +18,6 @@ class TitleClass extends JFrame implements KeyListener {
         JPanel p = new JPanel();
         JLabel label = new JLabel();
         URL url = getClass().getResource("/img/title1000700.jpg");
-        System.out.println("URL" + url);
         ImageIcon icon = new ImageIcon(url);
         label.setIcon(icon);
         p.add(label);

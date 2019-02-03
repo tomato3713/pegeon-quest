@@ -11,7 +11,7 @@ import javax.sound.sampled.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.File;
+import java.net.URL;
 
 import java.util.Observer;
 import java.util.Observable;
@@ -47,7 +47,7 @@ class PegeonWindowClass extends JFrame implements Observer {
 
     // BGM 再生用を行うクラス
     class bgmThread extends Thread {
-        File file;
+        URL url;
         private boolean isActive = true;
         private boolean isPlay = false;
         private Clip clip;
@@ -58,10 +58,10 @@ class PegeonWindowClass extends JFrame implements Observer {
             // [[http://www.music-note.jp/bgm/nature.html]]
             // 大自然のイメージ (壮大・爽やか) Africa
             if( !isPlay ) {
-                file = new File("./sound", "bgm.wav");
+                url = getClass().getResource("/sound/bgm.wav");
                 AudioInputStream audioIn;
                 try {
-                    audioIn = AudioSystem.getAudioInputStream(this.file);
+                    audioIn = AudioSystem.getAudioInputStream(this.url);
                     AudioFormat af = audioIn.getFormat();
 
                     DataLine.Info dataLine = new DataLine.Info(Clip.class, af);
