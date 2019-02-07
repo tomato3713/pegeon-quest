@@ -7,16 +7,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
+// Help 画面を表示するためのクラス
 class HelpWin extends JFrame implements KeyListener {
+    // もともとあったゲーム画面を保持するための変数
     PegeonWindowClass pegeonWin;
     PegeonControllWindowClass pegeonctlWin;
     CommandListWindowClass cmdlistWin;
+
     // もとの画面に戻って来る必要があるため、３つの画面への参照を渡す
     public HelpWin(PegeonWindowClass pegeonWin, PegeonControllWindowClass pegeonctlWin, CommandListWindowClass cmdlistWin){
         this.pegeonWin = pegeonWin;
         this.pegeonctlWin = pegeonctlWin;
         this.cmdlistWin = cmdlistWin;
 
+        // ヘルプ画面を表示
         JPanel p = new JPanel();
         JLabel label = new JLabel();
         ImageIcon icon = new ImageIcon(getClass().getResource("/img/help.png"));
@@ -32,12 +36,13 @@ class HelpWin extends JFrame implements KeyListener {
         this.setTitle("Pegeon QUEST");
         addKeyListener(this);
     }
+
+    // Enter keyが押されたら、Help画面を閉じ、もとの画面に戻す
     public void keyPressed(KeyEvent e){
         switch (e.getKeyCode()) {
             case KeyEvent.VK_ENTER:
                 this.setVisible(false);
                 // 画面を閉じるだけ
-                // titleWin = new TitleClass();
                 this.dispose();
                 this.pegeonWin.setVisible(true);
                 this.pegeonctlWin.setVisible(true);
