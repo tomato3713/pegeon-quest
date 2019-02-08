@@ -37,7 +37,7 @@ read ANSWER
 case $ANSWER in
     "" | "Y" | "y" | "yes" | "Yes" | "YES" )
         echo "YES!! Execute: java -jar PegeonQuest.jar"
-        java -jar ../PegeonQuest/PegeonQuest.jar
+        java -jar ../PegeonQuest.jar
         ;;
     * )
         ;;
