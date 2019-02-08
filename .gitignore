@@ -1,2 +1,11 @@
-prj/*.class
-prj/*.jar
+*.class
+*.jar
+*.war
+*.ear
+
+.DS_Store
+Thumbs.db
+
+*.log
+*.swp
+*.bak

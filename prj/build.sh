@@ -28,7 +28,7 @@ jar cfm PegeonQuest.jar \
     media.html
 
 # move dir
-cp PegeonQuest.jar ../PegeonQuest
+cp PegeonQuest.jar ../
 
 echo "Success: Will you execute PegeonQuest.jar file? [Y/n]"
 read ANSWER
@@ -37,7 +37,7 @@ read ANSWER
 case $ANSWER in
     "" | "Y" | "y" | "yes" | "Yes" | "YES" )
         echo "YES!! Execute: java -jar PegeonQuest.jar"
-        java -jar ../PegeonQuest/PegeonQuest.jar
+        java -jar ../PegeonQuest.jar
         ;;
     * )
         ;;
