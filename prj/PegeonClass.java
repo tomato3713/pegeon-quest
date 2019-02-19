@@ -13,11 +13,6 @@ import java.net.URL;
 
 // 鳩を定義するクラス
 class PegeonClass extends Observable implements ActionListener {
-    // 位置に関するもの
-    private int x,y;
-    // 鳩の位置を決定する変数
-    private double t;
-
     // *Effect が true のときに、エフェクトの文字を表示する
     private boolean changeEffect = false; // 進化時のエフェクト
     private boolean beamEffect = false; // ビームのエフェクト
@@ -56,6 +51,8 @@ class PegeonClass extends Observable implements ActionListener {
 
     //　鳩の状態を管理するためのクラス - 餌を食べた量、進化状態等
     public class State{
+        // 鳩の位置を決定する変数
+        private double t;
         // 餌をやった量を表示するかを決める。表示するときは true
         private boolean visible = true;
         // 現在の種類 下記の文字列で管理
@@ -78,6 +75,7 @@ class PegeonClass extends Observable implements ActionListener {
             this.food = 0;
             this.report = 0;
             this.name = "";
+            this.t = 0;
             this.setImg("pegeon_small.png");
         }
         // draw() は餌を食べた量を描画するメソッド
@@ -182,16 +180,11 @@ class PegeonClass extends Observable implements ActionListener {
 
     PegeonClass(int x, int y) {
         this.state = new State();
-        this.setX(x);
-        this.setY(y);
         this.crowsSound = new soundThread("poppoo.wav");
         this.beamSound = new soundThread("fm_shot4.wav");
         this.evolutionSound = new soundThread("evolution.wav");
         this.foodSound = new soundThread("delicious.wav");
         this.namedSound = new soundThread("thanks.wav");
-
-        // 鳩の位置を決定する変数
-        this.t = 0;
 
         // 鳩ビーム用画像の読み込み
         URL url = getClass().getResource("/img/yasokukku-beam.png");
@@ -209,8 +202,8 @@ class PegeonClass extends Observable implements ActionListener {
     }
     // getter
     // getX(), getY() は現在の座標を返すメソッド
-    public int getX() { return this.x; }
-    public int getY() { return this.y; }
+    public int getX() { return Math.abs((int)(400 * Math.cos(this.state.t) + 100)); }
+    public int getY() { return Math.abs((int)(400 * Math.sin(this.state.t) + 50 )); }
     // getName() は鳩の名前を返すメソッド
     public String getName() { return this.state.name; }
 
@@ -221,9 +214,6 @@ class PegeonClass extends Observable implements ActionListener {
         sound.start();
         this.state.name = name;
     }
-    // setX(), setY() は鳩の表示位置を設定するメソッド
-    public void setX(int x) { this.x = x; }
-    public void setY(int y) { this.y = y; }
 
     // draw() は鳩に関係するすべてのものの描画を管理するメソッド
     public void draw(Graphics g) {
@@ -232,26 +222,22 @@ class PegeonClass extends Observable implements ActionListener {
             drawPegeonbeam(g);
         } else {
             // 鳩を動かす
-            // 鳩の動く先の座標を求める
-            int futureX = Math.abs((int)(400 * Math.cos(this.t) + 100));
-            int futureY = Math.abs((int)(400 * Math.sin(this.t) + 50));
-
+            int postX = this.getX();
             // 餌が表示されるときは動きをゆっくりにする。
             if( !foodVisible ) {
-                if( t > Math.PI * 2) { t = 0; }
-                else { t += 0.005; }
+                if( this.state.t > Math.PI * 2) { this.state.t = 0; }
+                else { this.state.t += 0.005; }
             } else {
-                if( t > Math.PI * 2) { t = 0; }
-                else { t += 0.002; }
+                if( this.state.t > Math.PI * 2) { this.state.t = 0; }
+                else { this.state.t += 0.002; }
             }
 
             // 鳩が進む方向に鳩の頭を向ける
-            if ( this.getX() < futureX ) {
+            if ( this.getX() > postX ) {
                 // 右向きに進むとき
                 // 左右反転させて描画
                 int width = this.state.img.getWidth(null);
                 int height = this.state.img.getHeight(null);
-                this.setX(futureX); this.setY(futureY);
                 g.drawImage(this.state.img, this.getX(), this.getY(), -1 * width, height, null);
 
                 if( this.foodVisible ) {
@@ -260,9 +246,7 @@ class PegeonClass extends Observable implements ActionListener {
 
             } else {
                 // 左向きに進むとき
-                this.setX(futureX); this.setY(futureY);
                 g.drawImage(this.state.img, getX(), getY(), null);
-
                 if( this.foodVisible ) {
                     g.drawImage(food_img, this.getX() - 100, this.getY(), null);
                 }
@@ -273,7 +257,7 @@ class PegeonClass extends Observable implements ActionListener {
                 // 鳩の名前を描画
                 g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 32));
                 g.setColor(Color.black);
-                g.drawString(this.state.name, this.x + 50, this.y + 10); // draw pegeon name
+                g.drawString(this.state.name, this.getX() + 50, this.getY() + 10); // draw pegeon name
             }
 
             // 進化のエフェクトを描画

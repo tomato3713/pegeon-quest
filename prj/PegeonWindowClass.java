@@ -15,15 +15,10 @@ import java.io.InputStream;
 import java.io.BufferedInputStream;
 import java.net.URL;
 
-import java.util.Observer;
-import java.util.Observable;
-
 // メインのゲームウィンドウ
-class PegeonWindowClass extends JFrame implements Observer {
-    private boolean timeOver = false;
+class PegeonWindowClass extends JFrame {
     private PegeonPanel panel;
     private JProgressBar bar;
-    private BarObservable observer;
     private bgmThread bgm;
 
     public PegeonWindowClass(int basex, int basey, int x, int y, BarObservable o) {
@@ -38,8 +33,7 @@ class PegeonWindowClass extends JFrame implements Observer {
         bar = new JProgressBar(0, 100);
         pane.add(bar, BorderLayout.SOUTH);
 
-        this.observer = o;
-        this.observer.setBar(bar);
+        o.setBar(bar);
 
         // 可視化
         this.setVisible(true);
@@ -85,9 +79,6 @@ class PegeonWindowClass extends JFrame implements Observer {
             // 終了直前の処理
             clip.stop();
         }
-    }
-    public void update(Observable o, Object r) {
-        timeOver = true;
     }
 
     // ウィンドウが表示されているときのみ、bgmを再生する。
